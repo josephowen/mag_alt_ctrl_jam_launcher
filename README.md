@@ -1,11 +1,11 @@
-# mag_2026_flip_out_launcher
+# MAGFest Alt Control Jam Launcher
 
 Being developped in openFrameworks 0.9.8 using Visual Studio 2015
 
-jam info & games: https://itch.io/jam/flip-out
+Instructions for building the controller are on the jam page.
 
-Instructions for building the controller are on that jam page.
-Controller code: https://code.emma.coop/andy/hardware_jam_2026_arduino
+2026 jam info & games: https://itch.io/jam/flip-out
+2026 Controller code: https://code.emma.coop/andy/hardware_jam_2026_arduino
 
 Launcher software by Andy Wallace
 additional code by josephalopod (josephalopod.itch.io)
@@ -18,10 +18,8 @@ You can use this repo as a reference to make your own game launcher.
 
 The whole thing is Windows only. Sorry.
 
-
 This whole launcher is a direct descendent of the Dream Boxxx launcher I wrote years ago. Info about that here: https://arcadecommons.org/games/dreamboxxx/
 That's why tons of stuff in this project is called "dreamlauncher"
-
 
 
 # Install 

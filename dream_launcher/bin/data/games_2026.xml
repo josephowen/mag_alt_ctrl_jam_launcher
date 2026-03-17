@@ -1,0 +1,108 @@
+<GAMES>
+	<GAME>
+		<TITLE>general_info</TITLE>
+		<CREDITS>None</CREDITS>
+		<INFO>It's a game jam.</INFO>
+		<EXE_PATH></EXE_PATH>
+		<IS_WEB>FALSE</IS_WEB>
+		<ICON>FlipOutIcon.png</ICON>
+		<SCREENSHOT>FlipOutCoverNonPixel.png</SCREENSHOT>
+	</GAME>
+	<GAME>
+		<TITLE>Five Lights at Debbies</TITLE>
+		<CREDITS>by LeapinLemurs</CREDITS>
+		<INFO>Debbie is afraid of the dark, and for good reason! Evil spirits are after her soul (and her generator battery). Fend them off for as long as you can!</INFO>
+		<EXE_PATH>/FiveLightsAtDebbiesExe/FiveLightsAtDebbies.exe</EXE_PATH>
+		<IS_WEB>FALSE</IS_WEB>
+		<ICON>debbies_icon.png</ICON>
+		<SCREENSHOT>debbies.png</SCREENSHOT>
+	</GAME>
+	<GAME>
+		<TITLE>Up To Go Down</TITLE>
+		<CREDITS>by Gramfors and Wesna</CREDITS>
+		<INFO>Inspired by true elevator events and featuring insufferable elevator music (I'm sorry), Up To Go Down puts you in the shoes of the operator of an extremely manual elevator system.
+
+Transport passengers to their requested floor to score enough points to earn a spot on the leaderboard — and the privilege of trying to input your initials using five toggle switches (I'm sorry).</INFO>
+		<EXE_PATH>/up-to-go-down.exe</EXE_PATH>
+		<IS_WEB>FALSE</IS_WEB>
+		<ICON>up-to-go-down.png</ICON>
+		<SCREENSHOT>utgd-screenshot.png</SCREENSHOT>
+	</GAME>
+	<GAME>
+		<TITLE>Shape + Bake</TITLE>
+		<CREDITS>by josephalopod</CREDITS>
+		<INFO>Feed the hungry monster delicious shapes! But beware! The monster is a picky eater, with very particular tastes. Assemble the correct orders and flip them straight into the creature's mouth!</INFO>
+		<EXE_PATH>/shape-and-bake.exe</EXE_PATH>
+		<IS_WEB>FALSE</IS_WEB>
+		<ICON>shape_icon.png</ICON>
+		<SCREENSHOT>shape.png</SCREENSHOT>
+	</GAME>
+	<GAME>
+		<TITLE>Illegal Space Trucking</TITLE>
+		<CREDITS>by Neat Creature Studios</CREDITS>
+		<INFO>Run from the space police, evade asteroids and fight, in this arcade game designed for the flip out jam.</INFO>
+		<EXE_PATH>/Illegal Space Trucking.exe</EXE_PATH>
+		<IS_WEB>FALSE</IS_WEB>
+		<ICON>truck_icon.png</ICON>
+		<SCREENSHOT>truck.png</SCREENSHOT>
+	</GAME>
+	<GAME>
+		<TITLE>The Self Defense</TITLE>
+		<CREDITS>by running jump</CREDITS>
+		<INFO>As we age, overcome challenges, and meet new people, our personalities evolve. But not yours.
+
+Harness your Mania, Spite, and Denial to construct Defense Mechanisms. Guard your fragile sense of self against the Hexagons of Change. 
+
+Avoid personal growth at all costs.</INFO>
+		<EXE_PATH>/the-self-defense-2025-10-24/the-self-defense-2025-10-24/The Self Defense.exe</EXE_PATH>
+		<PARAMS>-force-d3d11</PARAMS>
+		<IS_WEB>FALSE</IS_WEB>
+		<ICON>self_icon.png</ICON>
+		<SCREENSHOT>self.png</SCREENSHOT>
+	</GAME>
+	<GAME>
+		<TITLE>Ascent Together</TITLE>
+		<CREDITS>by Ammar Ahmed</CREDITS>
+		<INFO>gather your friends and cooperate to conquer the challenge.</INFO>
+		<EXE_PATH>/flippy/flippy.exe</EXE_PATH>
+		<IS_WEB>FALSE</IS_WEB>
+		<ICON>ascent_icon.png</ICON>
+		<SCREENSHOT>ascent.jpeg</SCREENSHOT>
+	</GAME>
+	
+	<GAME>
+		<TITLE>Toggle Tavern</TITLE>
+		<CREDITS>by Mashi Zaman and Mat Olson</CREDITS>
+		<INFO>Welcome to the pub, bartender! Flip the switches to throw the taps, try to keep up with the customers, and set a high score!</INFO>
+		<EXE_PATH>/Build_10262025/10262025/flip-out.exe</EXE_PATH>
+		<IS_WEB>FALSE</IS_WEB>
+		<ICON>tavern_icon.png</ICON>
+		<SCREENSHOT>tavern.png</SCREENSHOT>
+	</GAME>
+	<GAME>
+		<TITLE>Low. Rye. Dur.</TITLE>
+		<CREDITS>by Chris!!!</CREDITS>
+		<INFO>1972, East LA (Or at least, it would be if I had time for art): Drive your Low Rider to the goal! Toggles control your hydraulics, engine, and jet booster. Don't overheat your engine or roll your car, or you will explode! (But you can reset with the button)</INFO>
+		<EXE_PATH>/LowRiderV6_Win/x64/New project.exe</EXE_PATH>
+		<IS_WEB>FALSE</IS_WEB>
+		<ICON>lo_icon.png</ICON>
+		<SCREENSHOT>lo_1920x1080.png</SCREENSHOT>
+	</GAME>
+	
+	<GAME>
+		<TITLE>Psychic Joy Delivery Service</TITLE>
+		<CREDITS>by Wakeman</CREDITS>
+		<INFO>Do you enjoy twirling clumsily? The Psychic Joy Delivery Service wants YOU!
+- Become a floating head
+- Enter wormholes
+- Gather and deliver joy</INFO>
+		<EXE_PATH>/psychic-joy-ds--win-1/psychic-joy-ds--win-1/PsychicJoyDeliveryService.exe</EXE_PATH>
+		<IS_WEB>FALSE</IS_WEB>
+		<ICON>psychic_icon.png</ICON>
+		<SCREENSHOT>psychic.png</SCREENSHOT>
+	</GAME>
+	
+	
+	
+	
+</GAMES>
