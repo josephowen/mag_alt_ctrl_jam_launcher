@@ -62,35 +62,37 @@ void ofApp::loadXML() {
 	left_keys.clear();
 	right_keys.clear();
 
-	//go through the games
-	xml.setTo("GAME[0]");
-	do {
-		GameIcon thisIcon;
-		thisIcon.iconPic.load("images/"+xml.getValue<string>("ICON"));
+	// Ensure there are at least 8 tiles, repeating the full set as many times as needed.
+	while (icons.size() < 8) {
+		//go through the games
+		xml.setTo("GAME[0]");
+		do {
+			GameIcon thisIcon;
+			thisIcon.iconPic.load("images/" + xml.getValue<string>("ICON"));
 
-		GameInfo thisGameInfo;
-		string gameTitle = xml.getValue<string>("TITLE");
-		string byLine = xml.getValue<string>("CREDITS");
-		string infoText = xml.getValue<string>("INFO");
-		string path = xml.getValue<string>("EXE_PATH");
-		string params = "";
-		if (xml.exists("PARAMS")) {
-			params = xml.getValue<string>("PARAMS");
-		}
-		thisGameInfo.setup(gameTitle, byLine, infoText, path, params);
-		thisGameInfo.screenshot.load("images/" + xml.getValue<string>("SCREENSHOT"));
-		if (xml.exists("IS_WEB")) {
-			if (xml.getValue<bool>("IS_WEB")) {
-				thisGameInfo.isWeb = true;
+			GameInfo thisGameInfo;
+			string gameTitle = xml.getValue<string>("TITLE");
+			string byLine = xml.getValue<string>("CREDITS");
+			string infoText = xml.getValue<string>("INFO");
+			string path = xml.getValue<string>("EXE_PATH");
+			string params = "";
+			if (xml.exists("PARAMS")) {
+				params = xml.getValue<string>("PARAMS");
 			}
-		}
+			thisGameInfo.setup(gameTitle, byLine, infoText, path, params);
+			thisGameInfo.screenshot.load("images/" + xml.getValue<string>("SCREENSHOT"));
+			if (xml.exists("IS_WEB")) {
+				if (xml.getValue<bool>("IS_WEB")) {
+					thisGameInfo.isWeb = true;
+				}
+			}
 
-		icons.push_back(thisIcon);
-		info.push_back(thisGameInfo);
-	} while (xml.setToSibling());
-
-	xml.setToParent();
+			icons.push_back(thisIcon);
+			info.push_back(thisGameInfo);
+		} while (xml.setToSibling());
 	
+		xml.setToParent();
+	}
 
 	//other settings
 	if (xml.load("settings.xml") == false) {
