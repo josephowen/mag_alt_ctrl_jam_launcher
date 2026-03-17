@@ -55,6 +55,7 @@ Harness your Mania, Spite, and Denial to construct Defense Mechanisms. Guard you
 
 Avoid personal growth at all costs.</INFO>
 		<EXE_PATH>/the-self-defense-2025-10-24/the-self-defense-2025-10-24/The Self Defense.exe</EXE_PATH>
+		<PARAMS>-force-d3d11</PARAMS>
 		<IS_WEB>FALSE</IS_WEB>
 		<ICON>self_icon.png</ICON>
 		<SCREENSHOT>self.png</SCREENSHOT>

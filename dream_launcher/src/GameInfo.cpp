@@ -1,6 +1,6 @@
 #include "GameInfo.h"
 
-void GameInfo::setup(string title, string byLine, string info, string path) {
+void GameInfo::setup(string title, string byLine, string info, string path, string params) {
 	titleText = title;
 	byLineText = byLine;
 	infoText = info;
@@ -11,6 +11,7 @@ void GameInfo::setup(string title, string byLine, string info, string path) {
 	}*/
 
 	executablePath = path;
+	executableParams = params;
 	isWeb = false;
 
 	is_general_info = title == "general_info";

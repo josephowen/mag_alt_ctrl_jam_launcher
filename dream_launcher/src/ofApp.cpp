@@ -73,7 +73,11 @@ void ofApp::loadXML() {
 		string byLine = xml.getValue<string>("CREDITS");
 		string infoText = xml.getValue<string>("INFO");
 		string path = xml.getValue<string>("EXE_PATH");
-		thisGameInfo.setup(gameTitle, byLine, infoText, path);
+		string params = "";
+		if (xml.exists("PARAMS")) {
+			params = xml.getValue<string>("PARAMS");
+		}
+		thisGameInfo.setup(gameTitle, byLine, infoText, path, params);
 		thisGameInfo.screenshot.load("images/" + xml.getValue<string>("SCREENSHOT"));
 		if (xml.exists("IS_WEB")) {
 			if (xml.getValue<bool>("IS_WEB")) {
@@ -462,7 +466,7 @@ void ofApp::keyPressed(int key) {
 				launchWeb(info[curSelection].executablePath);
 			}
 			else {
-				launchExe(info[curSelection].executablePath);
+				launchExe(info[curSelection].executablePath, info[curSelection].executableParams);
 			}
 		}
 	}
@@ -526,7 +530,7 @@ void ofApp::dragEvent(ofDragInfo dragInfo){
 }
 
 //--------------------------------------------------------------
-void ofApp::launchExe(string _path) {
+void ofApp::launchExe(string _path, string params) {
 	if (isFullScreened()) {
 		ofToggleFullscreen();
 	}
@@ -543,8 +547,11 @@ void ofApp::launchExe(string _path) {
 	string command = "open";
 	std::wstring commandTemp = std::wstring(command.begin(), command.end());
 	LPCWSTR commandLPC = commandTemp.c_str();
+
+	std::wstring paramsTemp = std::wstring(params.begin(), params.end());
+	LPCWSTR paramsLPC = paramsTemp.c_str();
 	 
-	ShellExecute(NULL, commandLPC, pathLPC, NULL, NULL, SW_SHOWDEFAULT);
+	ShellExecute(NULL, commandLPC, pathLPC, paramsLPC, NULL, SW_SHOWDEFAULT);
 	
 	canSelectGame = false;
 

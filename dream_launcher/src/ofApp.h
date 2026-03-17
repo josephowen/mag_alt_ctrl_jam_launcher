@@ -33,7 +33,7 @@ class ofApp : public ofBaseApp{
 		void dragEvent(ofDragInfo dragInfo);
 		void gotMessage(ofMessage msg);
 
-		void launchExe(string _path);
+		void launchExe(string _path, string params);
 		void launchWeb(string url);
 
 		bool isFullScreened();

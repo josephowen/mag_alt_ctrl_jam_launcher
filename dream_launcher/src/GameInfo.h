@@ -6,7 +6,7 @@
 class GameInfo {
 public:
 
-	void setup(string title, string byLine, string info, string path);
+	void setup(string title, string byLine, string info, string path, string params);
 	void draw(float alpha, int titleColHex, int textColHex, int outlineColHex);
 
 
@@ -18,6 +18,7 @@ public:
 	ofColor testCol;
 
 	string executablePath;
+	string executableParams;
 	bool isWeb;
 
 	BounceText * titleFont, * byLineFont, * infoFont;
