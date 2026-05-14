@@ -1,14 +1,18 @@
+#Requires AutoHotkey 2.0+
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-; MULTI-CAB LAUNCHER
-; by Andy Wallace
-; with additional code by josephalopod (josephalopod.itch.io)
+; MULTI-CAB LAUNCHER for AutoHotKey 2
+; based on original launcher by Andy Wallace
+; adapted by josephalopod (josephalopod.itch.io)
 ; 
-; When you run this, it will close EVERYTHING when you press K
+; When you run this, it will close EVERYTHING
 ; so save your work lol
 ;
 ; Win-Z will kill this script
 ;
-; don't forget to set the launcher path
+; LAUNCHER_PATH will need to be updated if
+; dream_launcher.exe is not in the same
+; directory as this script.
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -16,154 +20,157 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ; Game Variables
-Launcher_Path = "C:\Users\andy\Desktop\flip_out_2025-12-10\dream_launcher\bin\dream_launcher.exe"
+LAUNCHER_PATH := "dream_launcher.exe"
 
-; General Interface Settings
-Start_With_Hidden_Cursor = 1
+LAUNCHER_WINDOW_NAME := "dream_launcher_app"
 
+SHOW_CURSOR_FOR_GAMES := False
+
+cursor_visible := True
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ; INITIALIZATION
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-if (Start_With_Hidden_Cursor = 1)
-{
-	SystemCursor(0)
-}
+; This is required so that GetWinList only returns visible windows.
+DetectHiddenWindows(False)
 
-;kick this thing off
-Restart_Launcher()
+; Win-C toggles cursor visibility
+#c::ToggleCursorVisibility()
 
-;set the mouse to move every so often
-SetTimer, MoveMouse, 2000
+; k kills all games and launches the launcher
+k::ReturnToLauncher()
 
-;k kills all games and returns focus to the launcher
-k::KilLAllGames()
-; middle mouse click also restarts 
-MButton::KilLAllGames()
-
-;Win-Z to kill this script
-#z::
-	SystemCursor(1)	;give me my cursor back before quitting
+; Win-Z to kill this script
+#z:: {
+	SetCursorVisibility(True)
 	ExitApp
 	return
-	
-; Press Win-C to Toggle Cursor
-#c::SystemCursor("Toggle")
-
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-; RESTART BUTTON
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-Restart_Launcher()
-{
-	;MsgBox restarting
-
-	global Launcher_Path
-	
-	Process,Close,%Game_Id%
-
-	;Restart Program
-	Run %Launcher_Path%,,Max,Game_Id
-	
-	Send {#h}
 }
+
+OnExit OnExitCallback
+
+; kick this thing off
+ReturnToLauncher()
+
+; Main loop. Check every 200 ms for open applications. If there is only one, focus it.
+loop {
+	Sleep 200
+	ids := GetAllEligibleWindows()
+	if (ids.length == 1) {
+		if (!WinActive(ids[1])) {
+			WinActivate(ids[1])
+		}
+		if (!cursor_visible && SHOW_CURSOR_FOR_GAMES && !WinExist(LAUNCHER_WINDOW_NAME)) {
+			; If the window that is open isn't the launcher and we want to show the cursor for games, show it.
+			SetCursorVisibility(True)
+		}
+	}
+}
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+; LAUNCHER
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+ReturnToLauncher() {
+	KillAllGames()
+	RestartLauncher()
+}
+
+RestartLauncher() {
+	if (cursor_visible) {
+		SetCursorVisibility(False)
+	}
+	;restart the launcher
+	if (!WinExist(LAUNCHER_WINDOW_NAME)) {
+		Run(LAUNCHER_PATH)
+	}
+}
+
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ; Killing Windows
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-KillAllGames(){
-	;This loop runs through and closes everything other than system files
-	;https://autohotkey.com/board/topic/69677-close-all-windows-openminimized-browsers-but-not-pwr-off/
-	WinGet, id, list,,, Program Manager
-	Loop, %id%
-	{
-		this_id := id%A_Index% 
-		WinActivate, ahk_id %this_id%
-			WinGetClass, this_class, ahk_id %this_id%
-		WinGetTitle, this_title, ahk_id %this_id%
-		;MsgBox, %this_title%
-		If ((this_title != "dream_launcher_app") && (This_class != "Shell_traywnd") && (This_class != "Button"))  ; If class is not Shell_traywnd and not Button
-			WinClose, ahk_id %this_id% ;This is what it should be ;MsgBox, This ahk_id %this_id% ; Easier to test ;)
+KillAllGames() {
+	ids := GetAllEligibleWindows()
+	for this_id in ids {
+		WinActivate(this_id)
+		this_class := WinGetClass(this_id)
+		this_title := WinGetTitle(this_id)
+		if (this_title != "dream_launcher_app") {
+			WinClose(this_id)
+		}
 	}
-	
-	;restart the launcher
-	If !ProcessExist("dream_launcher.exe")
-		Restart_Launcher()
-		Sleep 100
-		MoveMouse()
-	
-	;Return focus to launcher and run the focus function (triggered by 'R')
-	;This was more relevant when the launcher stayed open.
-	WinActivate, dream_launcher
-	;Sleep 20
-	;Send {R 1}
-}
-
-
-
-;https://autohotkey.com/board/topic/98317-if-process-exist-command/
-ProcessExist(Name){
-	Process,Exist,%Name%
-	return Errorlevel
 }
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-; MOUSE WIGGLE
+; Utility
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-MoveMouse(){
-	;MsgBox, scrim scram
-	mousemove 5, 5, 10, R
-	;sleep 1000
-	mousemove -5, -5, 10, R
-	
-	;click the mouse incase the current game does not have focus
-	CoordMode, Mouse, Screen
-	MouseClick, left, 960, 540
+GetAllEligibleWindows() {
+	eligble_ids := []
+	ids := WinGetList(,, "Program Manager")
+	for this_id in ids {
+		this_class := WinGetClass(this_id)
+		; Only include windows if their class is not Shell_traywnd or Button
+		if (this_class != "Shell_traywnd" && this_class != "Button") {
+			eligble_ids.push(this_id)
+		}
+	}
+	return eligble_ids
 }
 
-
-
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-; BABYCASTLES CURSOR LIBRARY
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-SystemCursor(OnOff=1)   ; INIT = "I","Init"; OFF = 0,"Off"; TOGGLE = -1,"T","Toggle"; ON = others
-{
-    static AndMask, XorMask, $, h_cursor
-        ,c0,c1,c2,c3,c4,c5,c6,c7,c8,c9,c10,c11,c12,c13 ; system cursors
-        , b1,b2,b3,b4,b5,b6,b7,b8,b9,b10,b11,b12,b13   ; blank cursors
-        , h1,h2,h3,h4,h5,h6,h7,h8,h9,h10,h11,h12,h13   ; handles of default cursors
-    if (OnOff = "Init" or OnOff = "I" or $ = "")       ; init when requested or at first call
-    {
-        $ = h                                          ; active default cursors
-        VarSetCapacity( h_cursor,4444, 1 )
-        VarSetCapacity( AndMask, 32*4, 0xFF )
-        VarSetCapacity( XorMask, 32*4, 0 )
-        system_cursors = 32512,32513,32514,32515,32516,32642,32643,32644,32645,32646,32648,32649,32650
-        StringSplit c, system_cursors, `,
-        Loop %c0%
-        {
-            h_cursor   := DllCall( "LoadCursor", "uint",0, "uint",c%A_Index% )
-            h%A_Index% := DllCall( "CopyImage",  "uint",h_cursor, "uint",2, "int",0, "int",0, "uint",0 )
-            b%A_Index% := DllCall("CreateCursor","uint",0, "int",0, "int",0
-                , "int",32, "int",32, "uint",&AndMask, "uint",&XorMask )
-        }
-    }
-    if (OnOff = 0 or OnOff = "Init" or OnOff = "I" or $ = "" OnOff = "Off" or $ = "h" and (OnOff < 0 or OnOff = "Toggle" or OnOff = "T"))
-        $ = b  ; use blank cursors
-    else
-        $ = h  ; use the saved cursors
-
-    Loop %c0%
-    {
-        h_cursor := DllCall( "CopyImage", "uint",%$%%A_Index%, "uint",2, "int",0, "int",0, "uint",0 )
-        DllCall( "SetSystemCursor", "uint",h_cursor, "uint",c%A_Index% )
-    }
+ToggleCursorVisibility() {
+	global cursor_visible := !cursor_visible
+	SetCursorVisibility(cursor_visible)
 }
 
+SetCursorVisibility(desired_visibility) {
+	if (desired_visibility) {
+		ShowCursor()
+		global cursor_visible := True
+	} else {
+		HideCursor()
+		global cursor_visible := False
+	}
+}
+
+OnExitCallback(ExitReason, ExitCode) {
+	ShowCursor()
+	ExitApp
+}
+
+; Based on https://github.com/steveseguin/hide-cursor/
+ShowCursor() {
+	return DllCall("SystemParametersInfo", "uint", SPI_SETCURSORS := 0x57, "uint", 0, "ptr", 0, "uint", 0)
+}
+
+; Based on https://github.com/steveseguin/hide-cursor/
+HideCursor() {
+	static SystemCursors := Map(
+		"APPSTARTING", 32650,
+		"ARROW", 32512,
+		"CROSS", 32515,
+		"HAND", 32649,
+		"HELP", 32651,
+		"IBEAM", 32513,
+		"NO", 32648,
+		"SIZEALL", 32646,
+		"SIZENESW", 32643,
+		"SIZENS", 32645,
+		"SIZENWSE", 32642,
+		"SIZEWE", 32644,
+		"UPARROW", 32516,
+		"WAIT", 32514
+	)
+
+	AndMask := Buffer(128, 0xFF), XorMask := Buffer(128, 0)
+
+	for CursorName, CursorID in SystemCursors {
+		CursorHandle := DllCall("CreateCursor", "ptr", 0, "int", 0, "int", 0, "int", 32, "int", 32, "ptr", AndMask, "ptr", XorMask, "ptr")
+		DllCall("SetSystemCursor", "ptr", CursorHandle, "int", CursorID) ; calls DestroyCursor
+	}
+}
